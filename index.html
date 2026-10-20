@@ -161,7 +161,7 @@
                     }
                     eventMap[pName].push({
                         eventName: data.event_name,
-                        jsonFile: data.json_filename ? data.json_filename.replace("databases/", "") : null,
+                        jsonFile: data.json_filename ? data.json_filename.split(/[\\/]/).pop() : null,
                         date: data.event_date || "-"
                     });
                 });

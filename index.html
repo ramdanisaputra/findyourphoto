@@ -3,213 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Pencarian Foto AI (Drive Edition)</title>
+    <title>Sistem Pencarian Foto AI - Web Riders</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; color: #333; margin: 0; padding: 20px; }
-        .container { max-width: 1100px; margin: 0 auto; }
-        .header { text-align: center; margin-bottom: 20px; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+        .glass-card { background: white; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); }
         
-        .status-bar {
-            text-align: center; font-size: 13px; color: #15803d; background: #dcfce7;
-            border: 1px solid #bbf7d0; padding: 8px 16px; border-radius: 20px;
-            display: inline-block; margin-bottom: 15px; font-weight: 600;
-        }
-
-        .event-selector {
-            background: white; padding: 15px 20px; border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 15px;
-            display: flex; gap: 10px; justify-content: center; align-items: center; flex-wrap: wrap;
-        }
-
-        .search-box { 
-            background: white; padding: 20px; border-radius: 12px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
-            display: flex; gap: 15px; justify-content: center; align-items: center; flex-wrap: wrap; margin-bottom: 30px; 
-        }
-        input, select, button { padding: 12px; border-radius: 8px; border: 1px solid #ddd; font-size: 15px; outline: none; }
-        select, input { background-color: #fcfcfc; cursor: pointer; }
-        button.btn-search { background-color: #2563eb; color: white; border: none; font-weight: bold; cursor: pointer; transition: 0.2s; padding: 12px 25px; }
-        button.btn-search:hover { background-color: #1d4ed8; }
-        
-        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
-        .card { 
-            background: white; border-radius: 12px; overflow: hidden; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; padding-bottom: 15px; 
-            transition: transform 0.2s, box-shadow 0.2s;
-            display: flex; flex-direction: column; justify-content: space-between;
-        }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
-        
-        .card-img-wrapper { position: relative; cursor: pointer; overflow: hidden; }
-        .card img { width: 100%; height: 260px; object-fit: cover; background-color: #eee; transition: transform 0.3s; display: block; }
-        .card-img-wrapper:hover img { transform: scale(1.04); }
-        
-        .drive-btn {
-            display: inline-block; margin-top: 10px; padding: 8px 14px;
-            background-color: #0f9d58; color: white; text-decoration: none;
-            font-size: 13px; font-weight: bold; border-radius: 6px; transition: background 0.2s;
-        }
-        .drive-btn:hover { background-color: #0b8043; }
-
-        .badge { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; margin: 3px; color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); text-transform: capitalize; }
-        .badge-time { background-color: #4f46e5; color: white; text-shadow: none; font-weight: 600; }
-        .hitam { background-color: #222; } 
-        .putih { background-color: #f8f9fa; color: #333; border: 1px solid #ccc; text-shadow: none;}
-        .merah { background-color: #dc3545; } 
-        .biru { background-color: #0d6efd; }
-        .hijau { background-color: #198754; } 
-        .kuning { background-color: #ffc107; color: #333; text-shadow: none;}
-        .oranye { background-color: #fd7e14; } 
-        .abu-abu, .silver { background-color: #6c757d; }
-        .pink { background-color: #e83e8c; }
-        .cyan { background-color: #0dcaf0; color: #222; text-shadow: none; }
-        .cokelat { background-color: #795548; }
-        .ungu { background-color: #6f42c1; }
-        .marun { background-color: #800000; }
+        /* Badge Warna Custom */
+        .badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 600; text-transform: capitalize; border: 1px solid transparent; }
+        .hitam { background-color: #1e293b; color: white; } 
+        .putih { background-color: #ffffff; color: #334155; border-color: #cbd5e1; }
+        .merah { background-color: #ef4444; color: white; } 
+        .biru { background-color: #3b82f6; color: white; }
+        .hijau { background-color: #22c55e; color: white; } 
+        .kuning { background-color: #eab308; color: #451a03; }
+        .oranye { background-color: #f97316; color: white; } 
+        .abu-abu, .silver { background-color: #94a3b8; color: white; }
+        .pink { background-color: #ec4899; color: white; }
+        .cyan { background-color: #06b6d4; color: #164e63; }
+        .cokelat { background-color: #8b5cf6; color: white; } /* Anggap ungu/cokelat */
+        .ungu { background-color: #a855f7; color: white; }
+        .marun { background-color: #9f1239; color: white; }
         .none { display: none; }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h2>🏍️ AI Photo Finder (Drive Edition)</h2>
-            <p>Cari foto berdasarkan waktu, warna motor, helm, dan jaket</p>
+<body class="text-slate-800 pb-20 selection:bg-blue-200">
+
+    <!-- Header / Hero Section -->
+    <header class="bg-white border-b border-slate-200 pt-12 pb-10 mb-8 text-center px-4 relative overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-full bg-gradient-to-b from-blue-50 to-transparent pointer-events-none"></div>
+        <div class="relative z-10 max-w-4xl mx-auto">
+            <div class="inline-flex items-center justify-center w-12 h-12 bg-blue-600 text-white rounded-xl mb-4 shadow-lg shadow-blue-500/30">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h0.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3" stroke-width="2"/></svg>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight mb-3">Temukan Foto Anda</h1>
+            <p class="text-slate-500 text-sm md:text-base max-w-2xl mx-auto mb-6">Pilih fotografer dan event, lalu filter foto berdasarkan warna motor, helm, dan jaket Anda.</p>
             
-            <div class="status-bar" id="status-bar">
-                🟢 Live Sync GAS: Memuat data...
+            <!-- Status Bar -->
+            <div id="status-bar" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold rounded-full shadow-sm transition-all">
+                <svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                Menghubungkan ke Database...
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 md:px-6">
+        
+        <!-- Selektor Event & Fotografer -->
+        <div class="glass-card rounded-2xl p-6 mb-6">
+            <h2 class="text-sm font-bold text-slate-900 mb-4 flex items-center gap-2">
+                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                Pilih Album Event
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+                <div class="md:col-span-4">
+                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Fotografer</label>
+                    <select id="select-photographer" class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block p-3 outline-none cursor-pointer transition disabled:opacity-50" disabled>
+                        <option value="">Memuat Fotografer...</option>
+                    </select>
+                </div>
+                <div class="md:col-span-5">
+                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Event / Sesi</label>
+                    <select id="select-event" class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block p-3 outline-none cursor-pointer transition disabled:opacity-50" disabled>
+                        <option value="">Pilih Fotografer Dahulu</option>
+                    </select>
+                </div>
+                <div class="md:col-span-3 flex items-end">
+                    <button id="btn-load-event" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-sm px-5 py-3 text-center shadow-lg shadow-blue-500/30 transition transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        Tampilkan Foto
+                    </button>
+                </div>
             </div>
         </div>
 
-        <!-- Input Nama File Event JSON -->
-        <div class="event-selector">
-            <label for="input-filename"><strong>📁 Nama File Database Event:</strong></label>
-            <input type="text" id="input-filename" placeholder="database_namaevent_xxxx.json" style="width: 320px;">
-            <button class="btn-search" onclick="gantiEvent()" style="padding: 10px 18px;">Muat Event</button>
+        <!-- Filter Ciri-ciri -->
+        <div id="filter-section" class="glass-card rounded-2xl p-6 mb-8 transition-opacity duration-300 opacity-50 pointer-events-none">
+            <h2 class="text-sm font-bold text-slate-900 mb-4 flex items-center gap-2">
+                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+                Penyaringan Spesifik
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                <select id="filter-waktu" onchange="cariFoto()" class="bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl focus:ring-2 focus:ring-blue-500 block w-full p-2.5 outline-none cursor-pointer">
+                    <option value="">⏱️ Semua Rentang Waktu</option>
+                </select>
+                <select id="filter-motor" onchange="cariFoto()" class="bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl focus:ring-2 focus:ring-blue-500 block w-full p-2.5 outline-none cursor-pointer">
+                    <option value="">🏍️ Semua Warna Motor</option>
+                    <option value="hitam">Hitam</option><option value="putih">Putih</option><option value="merah">Merah</option><option value="biru">Biru</option><option value="hijau">Hijau</option><option value="kuning">Kuning</option><option value="oranye">Oranye</option><option value="silver">Silver / Abu-abu</option><option value="pink">Pink</option><option value="cyan">Cyan</option>
+                </select>
+                <select id="filter-helm" onchange="cariFoto()" class="bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl focus:ring-2 focus:ring-blue-500 block w-full p-2.5 outline-none cursor-pointer">
+                    <option value="">🪖 Semua Helm Depan</option>
+                    <option value="hitam">Hitam</option><option value="putih">Putih</option><option value="merah">Merah</option><option value="biru">Biru</option><option value="hijau">Hijau</option><option value="kuning">Kuning</option><option value="oranye">Oranye</option><option value="silver">Silver / Abu-abu</option><option value="pink">Pink</option><option value="cyan">Cyan</option>
+                </select>
+                <select id="filter-jaket" onchange="cariFoto()" class="bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl focus:ring-2 focus:ring-blue-500 block w-full p-2.5 outline-none cursor-pointer">
+                    <option value="">🧥 Semua Jaket Depan</option>
+                    <option value="hitam">Hitam</option><option value="putih">Putih</option><option value="merah">Merah</option><option value="biru">Biru</option><option value="hijau">Hijau</option><option value="kuning">Kuning</option><option value="oranye">Oranye</option><option value="silver">Silver / Abu-abu</option><option value="pink">Pink</option><option value="cyan">Cyan</option>
+                </select>
+            </div>
         </div>
+
+        <!-- Galeri Hasil -->
+        <div id="hasil-galeri" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Pesan Kosong Default -->
+            <div class="col-span-full text-center py-16">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 text-slate-400 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                </div>
+                <h3 class="text-lg font-semibold text-slate-700">Pilih Event Dahulu</h3>
+                <p class="text-sm text-slate-500 mt-1">Silakan pilih nama fotografer dan event pada menu di atas untuk memuat foto.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- ================= FIREBASE SCRIPT (SDK v10 Modular) ================= -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Konfigurasi Firebase dari proyek kamu[cite: 4]
+        const firebaseConfig = {
+            apiKey: "AIzaSyCO2QRZMA1Ui8J1eQA89o76oSc_YpfdEiU",
+            authDomain: "find-your-photo-188a0.firebaseapp.com",
+            projectId: "find-your-photo-188a0",
+            storageBucket: "find-your-photo-188a0.firebasestorage.app",
+            messagingSenderId: "212497999030",
+            appId: "1:212497999030:web:82380565489f6140ebf217"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // ==== MASUKKAN URL WEBHOOK GAS KAMU ====
+        const GAS_API_URL = "ISI_DENGAN_URL_WEB_APP_GAS_KAMU_YANG_BERAKHIRAN_EXEC";
         
-        <div class="search-box">
-            <select id="filter-waktu" onchange="cariFoto()">
-                <option value="">-- Semua Rentang Waktu --</option>
-            </select>
-            <select id="filter-motor" onchange="cariFoto()">
-                <option value="">-- Semua Warna Motor --</option>
-                <option value="hitam">Hitam</option>
-                <option value="putih">Putih</option>
-                <option value="merah">Merah</option>
-                <option value="biru">Biru</option>
-                <option value="hijau">Hijau</option>
-                <option value="kuning">Kuning</option>
-                <option value="oranye">Oranye</option>
-                <option value="silver">Silver / Abu-abu</option>
-                <option value="pink">Pink</option>
-                <option value="cyan">Cyan</option>
-                <option value="cokelat">Cokelat</option>
-                <option value="ungu">Ungu</option>
-                <option value="marun">Marun</option>
-            </select>
-            <select id="filter-helm" onchange="cariFoto()">
-                <option value="">-- Semua Helm (Depan) --</option>
-                <option value="hitam">Hitam</option>
-                <option value="putih">Putih</option>
-                <option value="merah">Merah</option>
-                <option value="biru">Biru</option>
-                <option value="hijau">Hijau</option>
-                <option value="kuning">Kuning</option>
-                <option value="oranye">Oranye</option>
-                <option value="silver">Silver / Abu-abu</option>
-                <option value="pink">Pink</option>
-                <option value="cyan">Cyan</option>
-                <option value="cokelat">Cokelat</option>
-                <option value="ungu">Ungu</option>
-                <option value="marun">Marun</option>
-            </select>
-            <select id="filter-jaket" onchange="cariFoto()">
-                <option value="">-- Semua Jaket (Depan) --</option>
-                <option value="hitam">Hitam</option>
-                <option value="putih">Putih</option>
-                <option value="merah">Merah</option>
-                <option value="biru">Biru</option>
-                <option value="hijau">Hijau</option>
-                <option value="kuning">Kuning</option>
-                <option value="oranye">Oranye</option>
-                <option value="silver">Silver / Abu-abu</option>
-                <option value="pink">Pink</option>
-                <option value="cyan">Cyan</option>
-                <option value="cokelat">Cokelat</option>
-                <option value="ungu">Ungu</option>
-                <option value="marun">Marun</option>
-            </select>
-            <button class="btn-search" onclick="cariFoto()">🔍 Filter Foto</button>
-        </div>
+        let eventMap = {}; // Format: { "Nama Fotografer": [ { name: "Event 1", file: "json_name" } ] }
+        window.database = []; // Data foto dari GAS
+        
+        const selPhoto = document.getElementById('select-photographer');
+        const selEvent = document.getElementById('select-event');
+        const btnLoad = document.getElementById('btn-load-event');
+        const statusBar = document.getElementById('status-bar');
 
-        <div class="gallery" id="hasil-galeri"></div>
-    </div>
+        // 1. Ambil Daftar Event dari Firebase
+        async function fetchEventsFromFirebase() {
+            try {
+                // Ambil hanya event yang sudah 'Selesai' diolah AI
+                const q = query(collection(db, "queues"), where("status", "==", "Selesai"));
+                const querySnapshot = await getDocs(q);
+                
+                eventMap = {};
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const pName = data.photographer_name || "Fotografer Anonim";
+                    
+                    if (!eventMap[pName]) {
+                        eventMap[pName] = [];
+                    }
+                    eventMap[pName].push({
+                        eventName: data.event_name,
+                        jsonFile: data.json_filename ? data.json_filename.replace("databases/", "") : null,
+                        date: data.event_date || "-"
+                    });
+                });
 
-    <script>
-        // MASUKKAN URL WEB APP GOOGLE APPS SCRIPT (GAS) KAMU DI SINI:
-        const GAS_API_URL = "https://script.google.com/macros/s/AKfycbwCnZTJmkfKnxjXiEudEEO01ApI4-kIcj0pJbXM-iLy4EqWuzPSRVVAuABuDAswhy7b/exec";
-
-        let database = [];
-        let currentFilename = "";
-
-        // Fungsi membaca nama file dari URL parameter ?file=
-        function getFilenameFromURL() {
-            const params = new URLSearchParams(window.location.search);
-            return params.get('file') || "database_motor_gdrive.json";
+                populatePhotographers();
+            } catch (error) {
+                console.error("Error fetching Firebase:", error);
+                setStatus("🔴 Gagal memuat daftar event dari database.", "bg-red-50 text-red-700 border-red-200");
+            }
         }
 
-        currentFilename = getFilenameFromURL();
-        document.getElementById('input-filename').value = currentFilename;
-
-        function muatDatabase() {
-            if (!GAS_API_URL || GAS_API_URL.includes("ISI_DENGAN_URL_WEB_APP_GAS_KAMU")) {
-                document.getElementById('status-bar').innerHTML = 
-                    '⚠️ Harap masukkan URL Web App GAS pada variabel <code>GAS_API_URL</code> di file index.html';
+        function populatePhotographers() {
+            const photographers = Object.keys(eventMap).sort();
+            selPhoto.innerHTML = '<option value="">-- Pilih Fotografer --</option>';
+            
+            if (photographers.length === 0) {
+                selPhoto.innerHTML = '<option value="">Belum ada event tersedia</option>';
+                setStatus("ℹ️ Belum ada event yang selesai diproses AI.", "bg-slate-100 text-slate-700 border-slate-200");
                 return;
             }
 
-            const fetchUrl = `${GAS_API_URL}?filename=${encodeURIComponent(currentFilename)}&t=${new Date().getTime()}`;
+            photographers.forEach(name => {
+                selPhoto.innerHTML += `<option value="${name}">${name}</option>`;
+            });
+
+            selPhoto.disabled = false;
+            setStatus("🟢 Database Terhubung. Silakan pilih Fotografer.", "bg-emerald-50 text-emerald-700 border-emerald-200");
+        }
+
+        // Event Listener: Saat Fotografer Dipilih
+        selPhoto.addEventListener('change', function() {
+            const selected = this.value;
+            selEvent.innerHTML = '<option value="">-- Pilih Event --</option>';
+            
+            if (!selected || !eventMap[selected]) {
+                selEvent.disabled = true;
+                btnLoad.disabled = true;
+                return;
+            }
+
+            eventMap[selected].forEach(ev => {
+                if(ev.jsonFile) {
+                    selEvent.innerHTML += `<option value="${ev.jsonFile}">${ev.eventName} (${ev.date})</option>`;
+                }
+            });
+
+            selEvent.disabled = false;
+        });
+
+        // Event Listener: Saat Event Dipilih
+        selEvent.addEventListener('change', function() {
+            btnLoad.disabled = !this.value;
+        });
+
+        // Event Listener: Tombol Tampilkan Foto
+        btnLoad.addEventListener('click', function() {
+            const jsonFilename = selEvent.value;
+            if (jsonFilename) {
+                muatDataDariGAS(jsonFilename);
+            }
+        });
+
+        // 2. Ambil Data Foto (JSON) dari GAS
+        function muatDataDariGAS(filename) {
+            setStatus(`<svg class="w-4 h-4 animate-spin inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> Mengambil foto dari Drive...`, "bg-blue-50 text-blue-700 border-blue-200");
+            
+            const fetchUrl = `${GAS_API_URL}?filename=${encodeURIComponent(filename)}&t=${new Date().getTime()}`;
 
             fetch(fetchUrl)
-                .then(response => {
-                    if (!response.ok) throw new Error("Gagal mengambil data dari GAS API");
-                    return response.json();
-                })
+                .then(response => response.json())
                 .then(data => {
                     if (data.status === "error") {
-                        document.getElementById('status-bar').innerHTML = 
-                            `🔴 ${data.message} (${currentFilename})`;
-                        database = [];
-                        cariFoto();
-                        return;
+                        setStatus(`🔴 ${data.message}`, "bg-red-50 text-red-700 border-red-200");
+                        window.database = [];
+                    } else {
+                        window.database = Array.isArray(data) ? data : [];
+                        setStatus(`✅ Berhasil memuat ${window.database.length} foto!`, "bg-emerald-50 text-emerald-700 border-emerald-200");
+                        
+                        // Buka blokir panel filter
+                        document.getElementById('filter-section').classList.remove('opacity-50', 'pointer-events-none');
+                        
+                        updateDropdownWaktu();
+                        window.cariFoto(); // Render awal
                     }
-
-                    database = Array.isArray(data) ? data : [];
-                    document.getElementById('status-bar').innerHTML = 
-                        `🟢 Live GAS Sync Aktif | Event: <strong>${currentFilename}</strong> | Total Foto: <strong>${database.length}</strong>`;
-                    updateDropdownWaktu();
-                    cariFoto();
                 })
                 .catch(error => {
-                    document.getElementById('status-bar').innerHTML = 
-                        `🔴 Menunggu data dari GAS API... (${currentFilename})`;
+                    setStatus(`🔴 Gagal mengambil data dari Google Drive API.`, "bg-red-50 text-red-700 border-red-200");
                 });
         }
 
-        function gantiEvent() {
-            const inputVal = document.getElementById('input-filename').value.trim();
-            if (inputVal) {
-                currentFilename = inputVal;
-                muatDatabase();
-            }
+        // Helper UI
+        function setStatus(html, colorClasses) {
+            statusBar.className = `inline-flex items-center gap-2 px-4 py-2 border text-xs font-semibold rounded-full shadow-sm transition-all ${colorClasses}`;
+            statusBar.innerHTML = html;
         }
 
+        // ==========================================
+        // FUNGSI FILTER & RENDER GALERI (Global Window)
+        // ==========================================
         function updateDropdownWaktu() {
             const selectWaktu = document.getElementById('filter-waktu');
             const nilaiTerpilih = selectWaktu.value;
-            const daftarKelompok = [...new Set(database.map(i => i.kelompok_waktu || 'Lainnya'))].sort();
+            const daftarKelompok = [...new Set(window.database.map(i => i.kelompok_waktu || 'Lainnya'))].sort();
             
-            selectWaktu.innerHTML = '<option value="">-- Semua Rentang Waktu --</option>';
+            selectWaktu.innerHTML = '<option value="">⏱️ Semua Rentang Waktu</option>';
             daftarKelompok.forEach(waktu => {
                 if (waktu && waktu !== '-') {
                     const opt = document.createElement('option');
@@ -221,16 +278,13 @@
             });
         }
 
-        muatDatabase();
-        setInterval(muatDatabase, 10000); // Sinkronisasi otomatis setiap 10 detik
-
-        function cariFoto() {
+        window.cariFoto = function() {
             const fWaktu = document.getElementById('filter-waktu').value;
             const fMotor = document.getElementById('filter-motor').value;
             const fHelm = document.getElementById('filter-helm').value;
             const fJaket = document.getElementById('filter-jaket').value;
 
-            const hasilFilter = database.filter(item => {
+            const hasilFilter = window.database.filter(item => {
                 const dataItem = item.data || {};
                 const pDepan = dataItem.pengendara_depan || {};
 
@@ -249,7 +303,14 @@
             galeri.innerHTML = '';
 
             if (data.length === 0) {
-                galeri.innerHTML = '<h3 style="grid-column: 1 / -1; text-align: center; color: #777; margin-top: 40px;">Belum ada foto yang cocok...</h3>';
+                galeri.innerHTML = `
+                    <div class="col-span-full text-center py-16">
+                        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 text-slate-400 mb-4">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-slate-700">Foto tidak ditemukan</h3>
+                        <p class="text-sm text-slate-500 mt-1">Cobalah melonggarkan kriteria filter warna pakaian/motor.</p>
+                    </div>`;
                 return;
             }
 
@@ -257,55 +318,55 @@
                 let fileId = '';
                 let webView = item.url_view_gdrive || '';
                 let gdriveUrl = item.url_gdrive || '';
+                let match = webView.match(/\/d\/([a-zA-Z0-9_-]+)/) || webView.match(/id=([a-zA-Z0-9_-]+)/) || gdriveUrl.match(/id=([a-zA-Z0-9_-]+)/) || gdriveUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+                
+                if (match && match[1]) fileId = match[1];
 
-                let match = webView.match(/\/d\/([a-zA-Z0-9_-]+)/) || webView.match(/id=([a-zA-Z0-9_-]+)/);
-                if (!match) {
-                    match = gdriveUrl.match(/id=([a-zA-Z0-9_-]+)/) || gdriveUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
-                }
-
-                if (match && match[1]) {
-                    fileId = match[1];
-                }
-
-                let imgSource = '';
-                let fullResUrl = webView !== '' ? webView : '#';
-
-                if (fileId) {
-                    imgSource = `https://drive.google.com/thumbnail?id=${fileId}&sz=w600`;
-                } else {
-                    imgSource = 'https://via.placeholder.com/260?text=No+Image';
-                }
+                const imgSource = fileId ? `https://drive.google.com/thumbnail?id=${fileId}&sz=w600` : 'https://via.placeholder.com/260?text=No+Image';
+                const fullResUrl = webView !== '' ? webView : '#';
 
                 const dataItem = item.data || {};
                 const pDepan = dataItem.pengendara_depan || { helm: 'none', jaket: 'none' };
-                const motorColor = dataItem.motor || 'none';
-                const helmColor = pDepan.helm || 'none';
-                const jaketColor = pDepan.jaket || 'none';
-                const jamFoto = item.waktu_jam || '-';
-                const slotWaktu = item.kelompok_waktu || '-';
+                const mColor = dataItem.motor || 'none';
+                const hColor = pDepan.helm || 'none';
+                const jColor = pDepan.jaket || 'none';
 
-                const div = document.createElement('div');
-                div.className = 'card';
-                div.innerHTML = `
-                    <div>
-                        <div class="card-img-wrapper" onclick="window.open('${fullResUrl}', '_blank')" title="Klik untuk membuka foto di Google Drive">
-                            <img src="${imgSource}" loading="lazy" alt="${item.nama_file}" onerror="this.src='https://via.placeholder.com/260?text=Gagal+Muat+Gambar'">
+                galeri.innerHTML += `
+                    <div class="glass-card rounded-2xl overflow-hidden group flex flex-col justify-between hover:shadow-xl hover:-translate-y-1 transition duration-300">
+                        <div>
+                            <div class="relative overflow-hidden cursor-pointer bg-slate-100 aspect-[4/3]" onclick="window.open('${fullResUrl}', '_blank')" title="Buka foto resolusi penuh">
+                                <img src="${imgSource}" loading="lazy" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" alt="${item.nama_file}">
+                                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition duration-300 flex items-center justify-center">
+                                    <div class="bg-white/90 text-slate-800 text-xs font-bold px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition duration-300 transform translate-y-2 group-hover:translate-y-0 shadow-sm">
+                                        Perbesar 🔍
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-start mb-3">
+                                    <h3 class="font-bold text-slate-800 text-sm truncate pr-2" title="${item.nama_file}">${item.nama_file}</h3>
+                                    <span class="bg-blue-100 text-blue-700 text-[10px] font-bold px-2 py-1 rounded-md whitespace-nowrap">⏰ ${item.waktu_jam || '-'}</span>
+                                </div>
+                                <div class="flex flex-wrap gap-1.5">
+                                    ${mColor !== 'none' ? `<span class="badge ${mColor}">🏍️ ${mColor}</span>` : ''}
+                                    ${hColor !== 'none' ? `<span class="badge ${hColor}">🪖 ${hColor}</span>` : ''}
+                                    ${jColor !== 'none' ? `<span class="badge ${jColor}">🧥 ${jColor}</span>` : ''}
+                                </div>
+                            </div>
                         </div>
-                        <div style="padding: 12px 10px 5px 10px;">
-                            <strong style="font-size: 13px; color: #555;">📁 ${item.nama_file}</strong><br>
-                            <span class="badge badge-time">⏰ Jam ${jamFoto} (${slotWaktu})</span><br>
-                            <span class="badge ${motorColor}">🏍️ Motor: ${motorColor}</span><br>
-                            <span class="badge ${helmColor}">🪖 Helm: ${helmColor}</span><br>
-                            <span class="badge ${jaketColor}">🧥 Jaket: ${jaketColor}</span>
+                        <div class="px-4 pb-4 mt-auto">
+                            <a href="${fullResUrl}" target="_blank" class="block w-full py-2.5 text-center bg-slate-50 hover:bg-slate-100 text-slate-600 font-semibold text-xs rounded-xl border border-slate-200 transition">
+                                Buka di Google Drive ↗
+                            </a>
                         </div>
-                    </div>
-                    <div style="padding: 0 10px 12px 10px;">
-                        <a href="${fullResUrl}" target="_blank" class="drive-btn">📂 Buka di Google Drive ↗</a>
                     </div>
                 `;
-                galeri.appendChild(div);
             });
         }
+
+        // Inisialisasi: Panggil fungsi Firebase
+        fetchEventsFromFirebase();
+
     </script>
 </body>
 </html>

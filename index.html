@@ -10,6 +10,7 @@
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
         .glass-card { background: white; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); }
         
+        /* Badge Warna Custom */
         .badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 600; text-transform: capitalize; border: 1px solid transparent; }
         .hitam { background-color: #1e293b; color: white; } 
         .putih { background-color: #ffffff; color: #334155; border-color: #cbd5e1; }
@@ -25,17 +26,12 @@
         .ungu { background-color: #a855f7; color: white; }
         .marun { background-color: #9f1239; color: white; }
         .none { display: none; }
-
-        /* Custom Scrollbar untuk Dropdown */
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 8px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
     </style>
 </head>
-<body class="text-slate-800 pb-20 selection:bg-blue-200" onclick="tutupSemuaDropdown(event)">
+<body class="text-slate-800 pb-20 selection:bg-blue-200">
 
-    <!-- Header Ringkas -->
-    <header class="bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b border-slate-200/80 py-3.5 px-4 md:px-8 mb-6 shadow-sm">
+    <!-- Header Ringkas & Elegan (Sticky Navbar Style) -->
+    <header class="bg-white/90 backdrop-blur-md sticky top-0 z-30 border-b border-slate-200/80 py-3.5 px-4 md:px-8 mb-6 shadow-sm">
         <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-gradient-to-tr from-blue-600 to-indigo-600 text-white rounded-xl flex items-center justify-center shadow-md shadow-blue-500/20">
@@ -47,6 +43,7 @@
                 </div>
             </div>
             
+            <!-- Status Bar Ringkas -->
             <div id="status-bar" class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold rounded-full shadow-sm transition-all">
                 <svg class="w-3.5 h-3.5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                 Menghubungkan ke Database...
@@ -57,44 +54,36 @@
     <main class="max-w-6xl mx-auto px-4 md:px-6">
         
         <!-- Selektor Event & Fotografer -->
-        <div class="glass-card rounded-2xl p-5 md:p-6 mb-6 relative z-30">
-            <div class="flex items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-100">
+        <div class="glass-card rounded-2xl p-5 md:p-6 mb-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-100">
                 <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2">
                     <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                     Pilih Album & Fotografer
                 </h2>
+
+                <!-- Badge Foto Profil Fotografer Terpilih -->
+                <div id="photographer-badge" class="hidden items-center gap-2.5 bg-blue-50/80 border border-blue-100/80 px-3 py-1.5 rounded-xl transition">
+                    <img id="photographer-avatar" src="" class="w-7 h-7 rounded-lg object-cover border border-blue-300 shadow-sm">
+                    <div>
+                        <p id="photographer-display-name" class="text-xs font-bold text-slate-800 leading-tight"></p>
+                        <p class="text-[10px] text-blue-600 font-medium leading-tight">Fotografer Terverifikasi</p>
+                    </div>
+                </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-                
-                <!-- CUSTOM DROPDOWN FOTOGRAFER -->
-                <div class="md:col-span-4 relative">
+                <div class="md:col-span-4">
                     <label class="block text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Fotografer</label>
-                    
-                    <!-- Tombol Trigger Dropdown -->
-                    <div id="custom-photo-trigger" class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-xl p-3 flex items-center justify-between cursor-pointer transition hover:border-blue-400 opacity-50 pointer-events-none" onclick="toggleDropdown(event)">
-                        <div class="flex items-center gap-2.5" id="custom-photo-selected">
-                            <span>Memuat Fotografer...</span>
-                        </div>
-                        <svg class="w-4 h-4 text-slate-400 transition-transform duration-200" id="custom-photo-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                    </div>
-
-                    <!-- Menu List Dropdown (Hidden default) -->
-                    <div id="custom-photo-menu" class="absolute top-full mt-2 left-0 w-full bg-white border border-slate-200 rounded-xl shadow-xl z-50 hidden max-h-60 overflow-y-auto custom-scrollbar transform transition-all opacity-0 translate-y-[-10px]">
-                        <ul id="custom-photo-list" class="py-1">
-                            <!-- List fotografer akan disuntik dari JS -->
-                        </ul>
-                    </div>
+                    <select id="select-photographer" class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block p-3 outline-none cursor-pointer transition disabled:opacity-50" disabled>
+                        <option value="">Memuat Fotografer...</option>
+                    </select>
                 </div>
-
-                <!-- SELECT EVENT BAWAAN (Karena tidak butuh gambar) -->
-                <div class="md:col-span-5 relative z-20">
+                <div class="md:col-span-5">
                     <label class="block text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Event / Sesi</label>
-                    <select id="select-event" class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block p-3.5 outline-none cursor-pointer transition disabled:opacity-50" disabled>
+                    <select id="select-event" class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block p-3 outline-none cursor-pointer transition disabled:opacity-50" disabled>
                         <option value="">Pilih Fotografer Dahulu</option>
                     </select>
                 </div>
-
                 <div class="md:col-span-3 flex items-end">
                     <button id="btn-load-event" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-xl text-sm px-5 py-3 text-center shadow-md shadow-blue-500/20 transition transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
                         Tampilkan Foto
@@ -104,7 +93,7 @@
         </div>
 
         <!-- Filter Ciri-ciri -->
-        <div id="filter-section" class="glass-card rounded-2xl p-5 md:p-6 mb-8 transition-opacity duration-300 opacity-50 pointer-events-none relative z-10">
+        <div id="filter-section" class="glass-card rounded-2xl p-5 md:p-6 mb-8 transition-opacity duration-300 opacity-50 pointer-events-none">
             <h2 class="text-sm font-bold text-slate-900 mb-4 flex items-center gap-2">
                 <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
                 Penyaringan Spesifik
@@ -129,7 +118,7 @@
         </div>
 
         <!-- Galeri Hasil -->
-        <div id="hasil-galeri" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 relative z-0">
+        <div id="hasil-galeri" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             <div class="col-span-full text-center py-16">
                 <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 text-slate-400 mb-4">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
@@ -157,57 +146,23 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // URL WEBHOOK GAS
         const GAS_API_URL = "https://script.google.com/macros/s/AKfycbwCnZTJmkfKnxjXiEudEEO01ApI4-kIcj0pJbXM-iLy4EqWuzPSRVVAuABuDAswhy7b/exec";
         
         let eventMap = {}; 
         window.database = []; 
         
+        const selPhoto = document.getElementById('select-photographer');
         const selEvent = document.getElementById('select-event');
         const btnLoad = document.getElementById('btn-load-event');
         const statusBar = document.getElementById('status-bar');
-
-        // Custom Dropdown Elements
-        const customTrigger = document.getElementById('custom-photo-trigger');
-        const customSelected = document.getElementById('custom-photo-selected');
-        const customMenu = document.getElementById('custom-photo-menu');
-        const customList = document.getElementById('custom-photo-list');
-        const customIcon = document.getElementById('custom-photo-icon');
-        let selectedPhotographerEmail = "";
-
-        // Fungsi Buka/Tutup Dropdown Fotografer
-        window.toggleDropdown = function(e) {
-            e.stopPropagation();
-            if(customTrigger.classList.contains("pointer-events-none")) return;
-            
-            const isOpen = !customMenu.classList.contains("hidden");
-            if (isOpen) {
-                tutupDropdown();
-            } else {
-                customMenu.classList.remove("hidden");
-                setTimeout(() => {
-                    customMenu.classList.remove("opacity-0", "translate-y-[-10px]");
-                    customIcon.classList.add("rotate-180");
-                }, 10);
-            }
-        };
-
-        window.tutupSemuaDropdown = function() {
-            tutupDropdown();
-        };
-
-        function tutupDropdown() {
-            if(!customMenu.classList.contains("hidden")) {
-                customMenu.classList.add("opacity-0", "translate-y-[-10px]");
-                customIcon.classList.remove("rotate-180");
-                setTimeout(() => { customMenu.classList.add("hidden"); }, 200);
-            }
-        }
+        const badgePhotographer = document.getElementById('photographer-badge');
+        const avatarPhotographer = document.getElementById('photographer-avatar');
+        const namePhotographer = document.getElementById('photographer-display-name');
 
         // 1. Ambil Data Profil Users & Event dari Firebase
         async function fetchEventsFromFirebase() {
             try {
-                // Fetch User Profiles (Foto Profil & Nama)
+                // Fetch Data User Profil (untuk sinkronisasi Nama Kustom & Foto Profil real-time)
                 const usersSnapshot = await getDocs(collection(db, "users"));
                 const userProfiles = {};
                 usersSnapshot.forEach(docSnap => {
@@ -220,7 +175,7 @@
                     }
                 });
 
-                // Fetch Event selesai
+                // Fetch Event dengan Status 'Selesai'
                 const q = query(collection(db, "queues"), where("status", "==", "Selesai"));
                 const querySnapshot = await getDocs(q);
                 
@@ -229,6 +184,7 @@
                     const data = docSnap.data();
                     const pEmail = data.photographer_email || "unknown";
                     
+                    // Gunakan data dari koleksi 'users' jika ada, fallback ke data di 'queues'
                     const profile = userProfiles[pEmail] || {
                         name: data.photographer_name || "Fotografer Anonim",
                         photo: `https://ui-avatars.com/api/?name=${encodeURIComponent(data.photographer_name || "A")}`
@@ -249,80 +205,53 @@
                     });
                 });
 
-                renderCustomDropdown();
+                populatePhotographers();
             } catch (error) {
                 console.error("Error fetching Firebase:", error);
-                setStatus("🔴 Gagal memuat data.", "bg-red-50 text-red-700 border-red-200");
+                setStatus("🔴 Gagal memuat daftar event dari database.", "bg-red-50 text-red-700 border-red-200");
             }
         }
 
-        // Render List Fotografer di Custom Dropdown
-        function renderCustomDropdown() {
+        function populatePhotographers() {
             const emails = Object.keys(eventMap);
-            customList.innerHTML = '';
+            selPhoto.innerHTML = '<option value="">-- Pilih Fotografer --</option>';
             
             if (emails.length === 0) {
-                customSelected.innerHTML = `<span>Belum ada fotografer terdaftar</span>`;
+                selPhoto.innerHTML = '<option value="">Belum ada event tersedia</option>';
+                setStatus("ℹ️ Belum ada event yang selesai diproses AI.", "bg-slate-100 text-slate-700 border-slate-200");
                 return;
             }
 
-            customSelected.innerHTML = `<span>-- Pilih Fotografer --</span>`;
-            
-            // Opsi Reset
-            const liReset = document.createElement("li");
-            liReset.className = "px-4 py-2 hover:bg-slate-100 cursor-pointer text-slate-500 text-sm";
-            liReset.textContent = "-- Batalkan Pilihan --";
-            liReset.onclick = (e) => {
-                e.stopPropagation();
-                pilihFotografer("", "", "", true);
-            };
-            customList.appendChild(liReset);
-
-            // Render setiap Fotografer dengan fotonya
             emails.forEach(email => {
                 const pInfo = eventMap[email];
-                const li = document.createElement("li");
-                li.className = "px-4 py-2.5 hover:bg-blue-50 cursor-pointer flex items-center gap-3 border-b border-slate-50 last:border-0 transition";
-                li.innerHTML = `
-                    <img src="${pInfo.photo}" class="w-8 h-8 rounded-full object-cover shadow-sm border border-slate-200">
-                    <div class="flex flex-col">
-                        <span class="font-bold text-slate-800 text-sm leading-tight">${pInfo.name}</span>
-                        <span class="text-[10px] text-slate-400 leading-tight">${pInfo.events.length} Album Event</span>
-                    </div>
-                `;
-                li.onclick = (e) => {
-                    e.stopPropagation();
-                    pilihFotografer(email, pInfo.name, pInfo.photo, false);
-                };
-                customList.appendChild(li);
+                selPhoto.innerHTML += `<option value="${email}">${pInfo.name}</option>`;
             });
 
-            customTrigger.classList.remove("pointer-events-none", "opacity-50");
-            customTrigger.classList.add("bg-white");
-            setStatus("🟢 Database Terhubung.", "bg-emerald-50 text-emerald-700 border-emerald-200");
+            selPhoto.disabled = false;
+            setStatus("🟢 Database Terhubung. Silakan pilih Fotografer.", "bg-emerald-50 text-emerald-700 border-emerald-200");
         }
 
-        // Aksi Saat Fotografer Dipilih dari Dropdown
-        function pilihFotografer(email, name, photo, isReset) {
-            tutupDropdown();
-            selectedPhotographerEmail = email;
+        // Event Listener: Saat Fotografer Dipilih
+        selPhoto.addEventListener('change', function() {
+            const pEmail = this.value;
             selEvent.innerHTML = '<option value="">-- Pilih Event --</option>';
-
-            if (isReset || !email) {
-                customSelected.innerHTML = `<span>-- Pilih Fotografer --</span>`;
+            
+            if (!pEmail || !eventMap[pEmail]) {
                 selEvent.disabled = true;
                 btnLoad.disabled = true;
+                badgePhotographer.classList.add("hidden");
+                badgePhotographer.classList.remove("flex");
                 return;
             }
 
-            // Ubah tampilan trigger saat dipilih
-            customSelected.innerHTML = `
-                <img src="${photo}" class="w-6 h-6 rounded-full object-cover shadow-sm border border-slate-200">
-                <span class="font-bold text-slate-800">${name}</span>
-            `;
+            const pInfo = eventMap[pEmail];
+            
+            // Tampilkan foto profil kustom & nama fotografer
+            avatarPhotographer.src = pInfo.photo;
+            namePhotographer.textContent = pInfo.name;
+            badgePhotographer.classList.remove("hidden");
+            badgePhotographer.classList.add("flex");
 
-            // Isi Dropdown Event Native
-            const pInfo = eventMap[email];
             pInfo.events.forEach(ev => {
                 if(ev.jsonFile) {
                     selEvent.innerHTML += `<option value="${ev.jsonFile}">${ev.eventName} (${ev.date})</option>`;
@@ -330,7 +259,7 @@
             });
 
             selEvent.disabled = false;
-        }
+        });
 
         selEvent.addEventListener('change', function() {
             btnLoad.disabled = !this.value;
@@ -375,6 +304,7 @@
             statusBar.innerHTML = html;
         }
 
+        // Filter & Render Galeri
         function updateDropdownWaktu() {
             const selectWaktu = document.getElementById('filter-waktu');
             const nilaiTerpilih = selectWaktu.value;
@@ -448,9 +378,16 @@
                 galeri.innerHTML += `
                     <div class="glass-card rounded-2xl overflow-hidden group flex flex-col justify-between hover:shadow-xl hover:-translate-y-1 transition duration-300">
                         <div>
-                            <div class="relative overflow-hidden cursor-pointer bg-slate-100 aspect-[4/3]" onclick="window.open('${fullResUrl}', '_blank')" title="Buka foto resolusi penuh">
-                                <img src="${imgSource}" loading="lazy" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" alt="${item.nama_file}">
-                                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition duration-300 flex items-center justify-center">
+                            <!-- Wadah Foto dengan Latar Belakang Blur (Modern Style) -->
+                            <div class="relative overflow-hidden cursor-pointer bg-slate-900 aspect-[4/3]" onclick="window.open('${fullResUrl}', '_blank')" title="Buka foto resolusi penuh">
+                                <!-- Layer 1: Gambar Latar Blur -->
+                                <img src="${imgSource}" loading="lazy" class="absolute inset-0 w-full h-full object-cover blur-md scale-110 opacity-50 pointer-events-none" alt="" aria-hidden="true">
+                                
+                                <!-- Layer 2: Gambar Utama Utuh (object-contain) -->
+                                <img src="${imgSource}" loading="lazy" class="relative z-10 w-full h-full object-contain transition duration-500 group-hover:scale-105" alt="${item.nama_file}">
+                                
+                                <!-- Layer 3: Overlay Hover -->
+                                <div class="absolute inset-0 z-20 bg-black/0 group-hover:bg-black/20 transition duration-300 flex items-center justify-center">
                                     <div class="bg-white/90 text-slate-800 text-xs font-bold px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition duration-300 transform translate-y-2 group-hover:translate-y-0 shadow-sm">
                                         Perbesar 🔍
                                     </div>

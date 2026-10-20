@@ -378,9 +378,9 @@
                 galeri.innerHTML += `
                     <div class="glass-card rounded-2xl overflow-hidden group flex flex-col justify-between hover:shadow-xl hover:-translate-y-1 transition duration-300">
                         <div>
-                            <!-- Opsi 2: Wadah Foto Tetap Penuh dengan object-cover & object-top -->
+                            <!-- Posisikan cropping fokus di 20% dari atas -->
                             <div class="relative overflow-hidden cursor-pointer bg-slate-100 aspect-[4/3]" onclick="window.open('${fullResUrl}', '_blank')" title="Buka foto resolusi penuh">
-                                <img src="${imgSource}" loading="lazy" class="w-full h-full object-cover object-top transition duration-500 group-hover:scale-105" alt="${item.nama_file}">
+                                <img src="${imgSource}" loading="lazy" class="w-full h-full object-cover object-[center_20%] transition duration-500 group-hover:scale-105" alt="${item.nama_file}">
                                 <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition duration-300 flex items-center justify-center">
                                     <div class="bg-white/90 text-slate-800 text-xs font-bold px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition duration-300 transform translate-y-2 group-hover:translate-y-0 shadow-sm">
                                         Perbesar 🔍

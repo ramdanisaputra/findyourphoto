@@ -9,28 +9,34 @@
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0f172a; color: #f8fafc; }
         .glass-card { background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(12px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3); }
-        
-        /* Badge Warna Custom Transparan Modern */
+
+        /* Badge warna custom transparan modern */
         .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 9999px; font-size: 10px; font-weight: 700; text-transform: capitalize; border: 1px solid rgba(255, 255, 255, 0.2); backdrop-filter: blur(8px); }
-        .hitam { background-color: rgba(15, 23, 42, 0.8); color: #f8fafc; } 
+        .hitam { background-color: rgba(15, 23, 42, 0.8); color: #f8fafc; }
         .putih { background-color: rgba(255, 255, 255, 0.9); color: #0f172a; border-color: transparent; }
-        .merah { background-color: rgba(239, 68, 68, 0.85); color: white; } 
+        .merah { background-color: rgba(239, 68, 68, 0.85); color: white; }
         .biru { background-color: rgba(59, 130, 246, 0.85); color: white; }
-        .hijau { background-color: rgba(34, 197, 94, 0.85); color: white; } 
+        .biru-muda { background-color: rgba(96, 165, 250, 0.9); color: #0f172a; }
+        .biru-tua { background-color: rgba(30, 64, 175, 0.9); color: white; }
+        .hijau { background-color: rgba(34, 197, 94, 0.85); color: white; }
+        .hijau-muda { background-color: rgba(134, 239, 172, 0.9); color: #14532d; }
         .kuning { background-color: rgba(234, 179, 8, 0.9); color: #422006; }
-        .oranye { background-color: rgba(249, 115, 22, 0.85); color: white; } 
+        .oranye { background-color: rgba(249, 115, 22, 0.85); color: white; }
         .abu-abu, .silver { background-color: rgba(148, 163, 184, 0.85); color: white; }
         .pink { background-color: rgba(236, 72, 153, 0.85); color: white; }
         .cyan { background-color: rgba(6, 182, 212, 0.85); color: #083344; }
         .cokelat { background-color: rgba(139, 92, 246, 0.85); color: white; }
         .ungu { background-color: rgba(168, 85, 247, 0.85); color: white; }
         .marun { background-color: rgba(159, 18, 57, 0.85); color: white; }
+        .krem { background-color: rgba(245, 222, 179, 0.9); color: #451a03; }
+        .emas { background-color: rgba(234, 179, 8, 0.9); color: #422006; }
+        .tidak-terlihat { background-color: rgba(71, 85, 105, 0.9); color: white; }
         .none { display: none; }
     </style>
 </head>
 <body class="pb-20 selection:bg-blue-500 selection:text-white">
 
-    <!-- Header Ringkas & Elegan (Dark Glassmorphism Style) -->
+    <!-- Header Ringkas & Elegan -->
     <header class="bg-slate-900/80 backdrop-blur-md sticky top-0 z-30 border-b border-slate-800 py-3.5 px-4 md:px-8 mb-6 shadow-lg">
         <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
             <div class="flex items-center gap-3">
@@ -42,8 +48,7 @@
                     <p class="text-[11px] text-slate-400">Cari foto berdasarkan warna motor, helm & jaket</p>
                 </div>
             </div>
-            
-            <!-- Status Bar Ringkas -->
+
             <div id="status-bar" class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-blue-950/60 border border-blue-800/60 text-blue-300 text-xs font-semibold rounded-full shadow-sm transition-all">
                 <svg class="w-3.5 h-3.5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                 Menghubungkan ke Database...
@@ -52,7 +57,7 @@
     </header>
 
     <main class="max-w-6xl mx-auto px-4 md:px-6">
-        
+
         <!-- Selektor Event & Fotografer -->
         <div class="glass-card rounded-2xl p-5 md:p-6 mb-6">
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-800">
@@ -61,9 +66,8 @@
                     Pilih Album & Fotografer
                 </h2>
 
-                <!-- Badge Foto Profil Fotografer Terpilih -->
                 <div id="photographer-badge" class="hidden items-center gap-2.5 bg-slate-800/80 border border-slate-700/80 px-3 py-1.5 rounded-xl transition">
-                    <img id="photographer-avatar" src="" class="w-7 h-7 rounded-lg object-cover border border-blue-400 shadow-sm">
+                    <img id="photographer-avatar" src="" class="w-7 h-7 rounded-lg object-cover border border-blue-400 shadow-sm" alt="Foto fotografer">
                     <div>
                         <p id="photographer-display-name" class="text-xs font-bold text-white leading-tight"></p>
                         <p class="text-[10px] text-blue-400 font-medium leading-tight">Fotografer Terverifikasi</p>
@@ -73,13 +77,13 @@
 
             <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
                 <div class="md:col-span-4">
-                    <label class="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Fotografer</label>
+                    <label for="select-photographer" class="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Fotografer</label>
                     <select id="select-photographer" class="w-full bg-slate-800/90 border border-slate-700 text-white text-sm rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block p-3 outline-none cursor-pointer transition disabled:opacity-50" disabled>
                         <option value="">Memuat Fotografer...</option>
                     </select>
                 </div>
                 <div class="md:col-span-5">
-                    <label class="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Event / Sesi</label>
+                    <label for="select-event" class="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Event / Sesi</label>
                     <select id="select-event" class="w-full bg-slate-800/90 border border-slate-700 text-white text-sm rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block p-3 outline-none cursor-pointer transition disabled:opacity-50" disabled>
                         <option value="">Pilih Fotografer Dahulu</option>
                     </select>
@@ -102,17 +106,74 @@
                 <select id="filter-waktu" onchange="cariFoto()" class="bg-slate-800/90 border border-slate-700 text-slate-200 text-sm rounded-xl focus:ring-2 focus:ring-blue-500 block w-full p-2.5 outline-none cursor-pointer">
                     <option value="">⏱️ Semua Rentang Waktu</option>
                 </select>
+
                 <select id="filter-motor" onchange="cariFoto()" class="bg-slate-800/90 border border-slate-700 text-slate-200 text-sm rounded-xl focus:ring-2 focus:ring-blue-500 block w-full p-2.5 outline-none cursor-pointer">
                     <option value="">🏍️ Semua Warna Motor</option>
-                    <option value="hitam">Hitam</option><option value="putih">Putih</option><option value="merah">Merah</option><option value="biru">Biru</option><option value="hijau">Hijau</option><option value="kuning">Kuning</option><option value="oranye">Oranye</option><option value="silver">Silver / Abu-abu</option><option value="pink">Pink</option><option value="cyan">Cyan</option>
+                    <option value="hitam">Hitam</option>
+                    <option value="putih">Putih</option>
+                    <option value="abu-abu,silver">Abu-abu / Silver</option>
+                    <option value="merah">Merah</option>
+                    <option value="marun">Marun</option>
+                    <option value="pink">Pink</option>
+                    <option value="ungu">Ungu</option>
+                    <option value="biru">Biru</option>
+                    <option value="biru muda">Biru Muda</option>
+                    <option value="biru tua">Biru Tua</option>
+                    <option value="cyan">Cyan</option>
+                    <option value="hijau">Hijau</option>
+                    <option value="hijau muda">Hijau Muda</option>
+                    <option value="kuning">Kuning</option>
+                    <option value="oranye">Oranye</option>
+                    <option value="cokelat">Cokelat</option>
+                    <option value="krem">Krem</option>
+                    <option value="emas">Emas</option>
+                    <option value="tidak_terlihat">Tidak Terlihat</option>
                 </select>
+
                 <select id="filter-helm" onchange="cariFoto()" class="bg-slate-800/90 border border-slate-700 text-slate-200 text-sm rounded-xl focus:ring-2 focus:ring-blue-500 block w-full p-2.5 outline-none cursor-pointer">
                     <option value="">🪖 Semua Helm Depan</option>
-                    <option value="hitam">Hitam</option><option value="putih">Putih</option><option value="merah">Merah</option><option value="biru">Biru</option><option value="hijau">Hijau</option><option value="kuning">Kuning</option><option value="oranye">Oranye</option><option value="silver">Silver / Abu-abu</option><option value="pink">Pink</option><option value="cyan">Cyan</option>
+                    <option value="hitam">Hitam</option>
+                    <option value="putih">Putih</option>
+                    <option value="abu-abu,silver">Abu-abu / Silver</option>
+                    <option value="merah">Merah</option>
+                    <option value="marun">Marun</option>
+                    <option value="pink">Pink</option>
+                    <option value="ungu">Ungu</option>
+                    <option value="biru">Biru</option>
+                    <option value="biru muda">Biru Muda</option>
+                    <option value="biru tua">Biru Tua</option>
+                    <option value="cyan">Cyan</option>
+                    <option value="hijau">Hijau</option>
+                    <option value="hijau muda">Hijau Muda</option>
+                    <option value="kuning">Kuning</option>
+                    <option value="oranye">Oranye</option>
+                    <option value="cokelat">Cokelat</option>
+                    <option value="krem">Krem</option>
+                    <option value="emas">Emas</option>
+                    <option value="tidak_terlihat">Tidak Terlihat</option>
                 </select>
+
                 <select id="filter-jaket" onchange="cariFoto()" class="bg-slate-800/90 border border-slate-700 text-slate-200 text-sm rounded-xl focus:ring-2 focus:ring-blue-500 block w-full p-2.5 outline-none cursor-pointer">
                     <option value="">🧥 Semua Jaket Depan</option>
-                    <option value="hitam">Hitam</option><option value="putih">Putih</option><option value="merah">Merah</option><option value="biru">Biru</option><option value="hijau">Hijau</option><option value="kuning">Kuning</option><option value="oranye">Oranye</option><option value="silver">Silver / Abu-abu</option><option value="pink">Pink</option><option value="cyan">Cyan</option>
+                    <option value="hitam">Hitam</option>
+                    <option value="putih">Putih</option>
+                    <option value="abu-abu,silver">Abu-abu / Silver</option>
+                    <option value="merah">Merah</option>
+                    <option value="marun">Marun</option>
+                    <option value="pink">Pink</option>
+                    <option value="ungu">Ungu</option>
+                    <option value="biru">Biru</option>
+                    <option value="biru muda">Biru Muda</option>
+                    <option value="biru tua">Biru Tua</option>
+                    <option value="cyan">Cyan</option>
+                    <option value="hijau">Hijau</option>
+                    <option value="hijau muda">Hijau Muda</option>
+                    <option value="kuning">Kuning</option>
+                    <option value="oranye">Oranye</option>
+                    <option value="cokelat">Cokelat</option>
+                    <option value="krem">Krem</option>
+                    <option value="emas">Emas</option>
+                    <option value="tidak_terlihat">Tidak Terlihat</option>
                 </select>
             </div>
         </div>
@@ -145,12 +206,11 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-
         const GAS_API_URL = "https://script.google.com/macros/s/AKfycbwCnZTJmkfKnxjXiEudEEO01ApI4-kIcj0pJbXM-iLy4EqWuzPSRVVAuABuDAswhy7b/exec";
-        
-        let eventMap = {}; 
-        window.database = []; 
-        
+
+        let eventMap = {};
+        window.database = [];
+
         const selPhoto = document.getElementById('select-photographer');
         const selEvent = document.getElementById('select-event');
         const btnLoad = document.getElementById('btn-load-event');
@@ -159,11 +219,12 @@
         const avatarPhotographer = document.getElementById('photographer-avatar');
         const namePhotographer = document.getElementById('photographer-display-name');
 
-        // 1. Ambil Data Profil Users & Event dari Firebase
+        // 1. Ambil data profil pengguna dan event dari Firebase.
         async function fetchEventsFromFirebase() {
             try {
                 const usersSnapshot = await getDocs(collection(db, "users"));
                 const userProfiles = {};
+
                 usersSnapshot.forEach(docSnap => {
                     const uData = docSnap.data();
                     if (uData.email) {
@@ -176,12 +237,12 @@
 
                 const q = query(collection(db, "queues"), where("status", "==", "Selesai"));
                 const querySnapshot = await getDocs(q);
-                
+
                 eventMap = {};
-                querySnapshot.forEach((docSnap) => {
+                querySnapshot.forEach(docSnap => {
                     const data = docSnap.data();
                     const pEmail = data.photographer_email || "unknown";
-                    
+
                     const profile = userProfiles[pEmail] || {
                         name: data.photographer_name || "Fotografer Anonim",
                         photo: `https://ui-avatars.com/api/?name=${encodeURIComponent(data.photographer_name || "A")}`
@@ -212,7 +273,7 @@
         function populatePhotographers() {
             const emails = Object.keys(eventMap);
             selPhoto.innerHTML = '<option value="">-- Pilih Fotografer --</option>';
-            
+
             if (emails.length === 0) {
                 selPhoto.innerHTML = '<option value="">Belum ada event tersedia</option>';
                 setStatus("ℹ️ Belum ada event yang selesai diproses AI.", "bg-slate-800 text-slate-300 border-slate-700");
@@ -221,7 +282,10 @@
 
             emails.forEach(email => {
                 const pInfo = eventMap[email];
-                selPhoto.innerHTML += `<option value="${email}">${pInfo.name}</option>`;
+                const option = document.createElement('option');
+                option.value = email;
+                option.textContent = pInfo.name;
+                selPhoto.appendChild(option);
             });
 
             selPhoto.disabled = false;
@@ -231,25 +295,27 @@
         selPhoto.addEventListener('change', function() {
             const pEmail = this.value;
             selEvent.innerHTML = '<option value="">-- Pilih Event --</option>';
-            
+            btnLoad.disabled = true;
+
             if (!pEmail || !eventMap[pEmail]) {
                 selEvent.disabled = true;
-                btnLoad.disabled = true;
                 badgePhotographer.classList.add("hidden");
                 badgePhotographer.classList.remove("flex");
                 return;
             }
 
             const pInfo = eventMap[pEmail];
-            
             avatarPhotographer.src = pInfo.photo;
             namePhotographer.textContent = pInfo.name;
             badgePhotographer.classList.remove("hidden");
             badgePhotographer.classList.add("flex");
 
             pInfo.events.forEach(ev => {
-                if(ev.jsonFile) {
-                    selEvent.innerHTML += `<option value="${ev.jsonFile}">${ev.eventName} (${ev.date})</option>`;
+                if (ev.jsonFile) {
+                    const option = document.createElement('option');
+                    option.value = ev.jsonFile;
+                    option.textContent = `${ev.eventName || 'Event tanpa nama'} (${ev.date})`;
+                    selEvent.appendChild(option);
                 }
             });
 
@@ -262,36 +328,40 @@
 
         btnLoad.addEventListener('click', function() {
             const jsonFilename = selEvent.value;
-            if (jsonFilename) {
-                muatDataDariGAS(jsonFilename);
-            }
+            if (jsonFilename) muatDataDariGAS(jsonFilename);
         });
 
-        // 2. Ambil Data Foto (JSON) dari GAS
-        function muatDataDariGAS(filename) {
-            setStatus(`<svg class="w-3.5 h-3.5 animate-spin inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> Mengambil foto dari Drive...`, "bg-blue-950/60 text-blue-300 border-blue-800/60");
-            
-            const fetchUrl = `${GAS_API_URL}?filename=${encodeURIComponent(filename)}&t=${new Date().getTime()}`;
+        // 2. Ambil database JSON dari Apps Script / Google Drive.
+        async function muatDataDariGAS(filename) {
+            setStatus(
+                '<svg class="w-3.5 h-3.5 animate-spin inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> Mengambil foto dari Drive...',
+                "bg-blue-950/60 text-blue-300 border-blue-800/60"
+            );
+            btnLoad.disabled = true;
 
-            fetch(fetchUrl)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === "error") {
-                        setStatus(`🔴 ${data.message}`, "bg-red-950/60 text-red-300 border-red-800/60");
-                        window.database = [];
-                    } else {
-                        window.database = Array.isArray(data) ? data : [];
-                        setStatus(`✅ Berhasil memuat ${window.database.length} foto!`, "bg-emerald-950/60 text-emerald-300 border-emerald-800/60");
-                        
-                        document.getElementById('filter-section').classList.remove('opacity-50', 'pointer-events-none');
-                        
-                        updateDropdownWaktu();
-                        window.cariFoto();
-                    }
-                })
-                .catch(error => {
-                    setStatus(`🔴 Gagal mengambil data dari Google Drive API.`, "bg-red-950/60 text-red-300 border-red-800/60");
-                });
+            const fetchUrl = `${GAS_API_URL}?filename=${encodeURIComponent(filename)}&t=${Date.now()}`;
+
+            try {
+                const response = await fetch(fetchUrl);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const data = await response.json();
+
+                if (data.status === "error") {
+                    setStatus(`🔴 ${data.message || "Gagal mengambil database."}`, "bg-red-950/60 text-red-300 border-red-800/60");
+                    window.database = [];
+                } else {
+                    window.database = Array.isArray(data) ? data : [];
+                    setStatus(`✅ Berhasil memuat ${window.database.length} foto!`, "bg-emerald-950/60 text-emerald-300 border-emerald-800/60");
+                    document.getElementById('filter-section').classList.remove('opacity-50', 'pointer-events-none');
+                    updateDropdownWaktu();
+                    window.cariFoto();
+                }
+            } catch (error) {
+                console.error("Error loading JSON from GAS:", error);
+                setStatus("🔴 Gagal mengambil data dari Google Drive API.", "bg-red-950/60 text-red-300 border-red-800/60");
+            } finally {
+                btnLoad.disabled = !selEvent.value;
+            }
         }
 
         function setStatus(html, colorClasses) {
@@ -303,17 +373,23 @@
             const selectWaktu = document.getElementById('filter-waktu');
             const nilaiTerpilih = selectWaktu.value;
             const daftarKelompok = [...new Set(window.database.map(i => i.kelompok_waktu || 'Lainnya'))].sort();
-            
+
             selectWaktu.innerHTML = '<option value="">⏱️ Semua Rentang Waktu</option>';
             daftarKelompok.forEach(waktu => {
                 if (waktu && waktu !== '-') {
-                    const opt = document.createElement('option');
-                    opt.value = waktu;
-                    opt.textContent = `⏰ Rentang ${waktu}`;
-                    if (waktu === nilaiTerpilih) opt.selected = true;
-                    selectWaktu.appendChild(opt);
+                    const option = document.createElement('option');
+                    option.value = waktu;
+                    option.textContent = `⏰ Rentang ${waktu}`;
+                    if (waktu === nilaiTerpilih) option.selected = true;
+                    selectWaktu.appendChild(option);
                 }
             });
+        }
+
+        // Membantu filter dengan satu nilai atau beberapa label warna.
+        function warnaCocok(filterValue, warnaData) {
+            if (filterValue === "") return true;
+            return filterValue.split(",").includes(String(warnaData || ""));
         }
 
         window.cariFoto = function() {
@@ -327,16 +403,24 @@
                 const pDepan = dataItem.pengendara_depan || {};
 
                 const cocokWaktu = fWaktu === "" || item.kelompok_waktu === fWaktu;
-                const cocokMotor = fMotor === "" || dataItem.motor === fMotor;
-                const cocokHelm = fHelm === "" || pDepan.helm === fHelm;
-                const cocokJaket = fJaket === "" || pDepan.jaket === fJaket;
+                const cocokMotor = warnaCocok(fMotor, dataItem.motor);
+                const cocokHelm = warnaCocok(fHelm, pDepan.helm);
+                const cocokJaket = warnaCocok(fJaket, pDepan.jaket);
+
                 return cocokWaktu && cocokMotor && cocokHelm && cocokJaket;
             });
 
             tampilkanGaleri(hasilFilter);
+        };
+
+        function classWarna(warna) {
+            return String(warna || "none")
+                .trim()
+                .toLowerCase()
+                .replace(/\s+/g, "-");
         }
 
-        // DESAIN FULL PHOTO GLASSMORPHISM
+        // Galeri foto full-bleed.
         function tampilkanGaleri(data) {
             const galeri = document.getElementById('hasil-galeri');
             galeri.innerHTML = '';
@@ -355,13 +439,18 @@
 
             data.forEach(item => {
                 let fileId = '';
-                let webView = item.url_view_gdrive || '';
-                let gdriveUrl = item.url_gdrive || '';
-                let match = webView.match(/\/d\/([a-zA-Z0-9_-]+)/) || webView.match(/id=([a-zA-Z0-9_-]+)/) || gdriveUrl.match(/id=([a-zA-Z0-9_-]+)/) || gdriveUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
-                
+                const webView = item.url_view_gdrive || '';
+                const gdriveUrl = item.url_gdrive || '';
+                const match = webView.match(/\/d\/([a-zA-Z0-9_-]+)/)
+                    || webView.match(/id=([a-zA-Z0-9_-]+)/)
+                    || gdriveUrl.match(/id=([a-zA-Z0-9_-]+)/)
+                    || gdriveUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+
                 if (match && match[1]) fileId = match[1];
 
-                const imgSource = fileId ? `https://drive.google.com/thumbnail?id=${fileId}&sz=w600` : 'https://via.placeholder.com/260?text=No+Image';
+                const imgSource = fileId
+                    ? `https://drive.google.com/thumbnail?id=${fileId}&sz=w600`
+                    : 'https://via.placeholder.com/260?text=No+Image';
                 const fullResUrl = webView !== '' ? webView : '#';
 
                 const dataItem = item.data || {};
@@ -369,43 +458,37 @@
                 const mColor = dataItem.motor || 'none';
                 const hColor = pDepan.helm || 'none';
                 const jColor = pDepan.jaket || 'none';
+                const namaFile = item.nama_file || 'Foto tanpa nama';
+                const waktuJam = item.waktu_jam || '-';
 
                 galeri.innerHTML += `
                     <div class="relative rounded-2xl overflow-hidden group aspect-[3/4] border border-slate-700/60 shadow-xl hover:shadow-2xl hover:-translate-y-1 transition duration-500 flex flex-col justify-end bg-slate-900">
-                        
-                        <!-- 1. Foto Penuh (Full Bleed Background) -->
-                        <img src="${imgSource}" loading="lazy" class="absolute inset-0 w-full h-full object-cover object-[center_20%] group-hover:scale-105 transition duration-700 ease-out" alt="${item.nama_file}">
-                        
-                        <!-- 2. Dark Gradient Overlay (Menjamin Keterbacaan Teks) -->
+                        <img src="${imgSource}" loading="lazy" class="absolute inset-0 w-full h-full object-cover object-[center_20%] group-hover:scale-105 transition duration-700 ease-out" alt="${namaFile}">
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent opacity-90 group-hover:opacity-95 transition duration-300"></div>
 
-                        <!-- 3. Tombol Perbesar / Hover Overlay -->
-                        <div class="absolute inset-0 z-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 cursor-pointer" onclick="window.open('${fullResUrl}', '_blank')">
+                        <div class="absolute inset-0 z-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 cursor-pointer" onclick="window.open('${fullResUrl}', '_blank', 'noopener,noreferrer')">
                             <div class="bg-white/90 text-slate-900 text-xs font-extrabold px-4 py-2 rounded-full shadow-2xl backdrop-blur-md transform translate-y-2 group-hover:translate-y-0 transition duration-300">
                                 Perbesar 🔍
                             </div>
                         </div>
 
-                        <!-- 4. Panel Informasi Semi-Transparan (Glassmorphism Bottom Panel) -->
                         <div class="relative z-20 p-4 flex flex-col justify-end">
                             <div class="flex justify-between items-center mb-2.5">
-                                <h3 class="font-bold text-white text-sm truncate pr-2 shadow-sm" title="${item.nama_file}">${item.nama_file}</h3>
-                                <span class="bg-white/20 backdrop-blur-md text-white text-[10px] font-bold px-2 py-1 rounded-md border border-white/20 whitespace-nowrap shadow-sm">⏰ ${item.waktu_jam || '-'}</span>
-                            </div>
-                            
-                            <div class="flex flex-wrap gap-1.5 mb-3">
-                                ${mColor !== 'none' ? `<span class="badge ${mColor}">🏍️ ${mColor}</span>` : ''}
-                                ${hColor !== 'none' ? `<span class="badge ${hColor}">🪖 ${hColor}</span>` : ''}
-                                ${jColor !== 'none' ? `<span class="badge ${jColor}">🧥 ${jColor}</span>` : ''}
+                                <h3 class="font-bold text-white text-sm truncate pr-2 shadow-sm" title="${namaFile}">${namaFile}</h3>
+                                <span class="bg-white/20 backdrop-blur-md text-white text-[10px] font-bold px-2 py-1 rounded-md border border-white/20 whitespace-nowrap shadow-sm">⏰ ${waktuJam}</span>
                             </div>
 
-                            <a href="${fullResUrl}" target="_blank" class="block w-full py-2.5 text-center bg-white/15 hover:bg-white/30 text-white font-semibold text-xs rounded-xl backdrop-blur-md border border-white/20 transition shadow-sm active:scale-95">
+                            <div class="flex flex-wrap gap-1.5 mb-3">
+                                ${mColor !== 'none' ? `<span class="badge ${classWarna(mColor)}">🏍️ ${mColor}</span>` : ''}
+                                ${hColor !== 'none' ? `<span class="badge ${classWarna(hColor)}">🪖 ${hColor}</span>` : ''}
+                                ${jColor !== 'none' ? `<span class="badge ${classWarna(jColor)}">🧥 ${jColor}</span>` : ''}
+                            </div>
+
+                            <a href="${fullResUrl}" target="_blank" rel="noopener noreferrer" class="block w-full py-2.5 text-center bg-white/15 hover:bg-white/30 text-white font-semibold text-xs rounded-xl backdrop-blur-md border border-white/20 transition shadow-sm active:scale-95">
                                 Buka di Google Drive ↗
                             </a>
                         </div>
-
-                    </div>
-                `;
+                    </div>`;
             });
         }
 

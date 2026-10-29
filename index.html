@@ -98,10 +98,19 @@
 
         <!-- Filter Ciri-ciri -->
         <div id="filter-section" class="glass-card rounded-2xl p-5 md:p-6 mb-8 transition-opacity duration-300 opacity-50 pointer-events-none">
-            <h2 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
-                <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
-                Penyaringan Spesifik
-            </h2>
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
+                <h2 class="text-sm font-bold text-white flex items-center gap-2">
+                    <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+                    Penyaringan Spesifik
+                </h2>
+                
+                <!-- Toggle Developer Mode -->
+                <label class="inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="dev-mode-toggle" class="sr-only peer" onchange="window.toggleDevMode()">
+                    <div class="relative w-9 h-5 bg-slate-700/80 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-500 border border-slate-600"></div>
+                    <span class="ms-2 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Dev Mode (Selalu Tampil)</span>
+                </label>
+            </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                 <select id="filter-waktu" onchange="cariFoto()" class="bg-slate-800/90 border border-slate-700 text-slate-200 text-sm rounded-xl focus:ring-2 focus:ring-blue-500 block w-full p-2.5 outline-none cursor-pointer">
                     <option value="">⏱️ Semua Rentang Waktu</option>
@@ -392,6 +401,15 @@
             return filterValue.split(",").includes(String(warnaData || ""));
         }
 
+        // ================= LOGIKA DEV MODE TOGGLE =================
+        window.isDevMode = false;
+        window.toggleDevMode = function() {
+            window.isDevMode = document.getElementById('dev-mode-toggle').checked;
+            if (window.database && window.database.length > 0) {
+                window.cariFoto(); // Render ulang galeri saat toggle ditekan
+            }
+        };
+
         window.cariFoto = function() {
             const fWaktu = document.getElementById('filter-waktu').value;
             const fMotor = document.getElementById('filter-motor').value;
@@ -461,38 +479,43 @@
                 const namaFile = item.nama_file || 'Foto tanpa nama';
                 const waktuJam = item.waktu_jam || '-';
 
+                // Variabel CSS dinamis berdasarkan state Dev Mode
+                const infoOpacity = window.isDevMode ? "opacity-100" : "opacity-0 group-hover:opacity-100";
+                const infoTransform = window.isDevMode ? "translate-y-0" : "translate-y-4 group-hover:translate-y-0";
+                const infoPointer = window.isDevMode ? "pointer-events-auto" : "pointer-events-none group-hover:pointer-events-auto";
+
                 galeri.innerHTML += `
                 <div class="relative rounded-2xl overflow-hidden group aspect-[3/4] border border-slate-700/60 shadow-xl hover:shadow-2xl hover:-translate-y-1 transition duration-500 flex flex-col justify-end bg-slate-900">
-                <img src="${imgSource}" loading="lazy" class="absolute inset-0 w-full h-full object-cover object-[center_20%] group-hover:scale-105 transition duration-700 ease-out" alt="${namaFile}">
-        
-                <!-- Gradient gelap hanya muncul saat dihover (opacity-0 ke opacity-100) -->
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent opacity-0 group-hover:opacity-100 transition duration-300"></div>
+                    <img src="${imgSource}" loading="lazy" class="absolute inset-0 w-full h-full object-cover object-[center_20%] group-hover:scale-105 transition duration-700 ease-out" alt="${namaFile}">
+            
+                    <!-- Gradient gelap dinamis -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent transition duration-300 ${infoOpacity}"></div>
 
-                <!-- Tombol Perbesar digeser sedikit ke atas (mb-16) agar tidak bertumpuk dengan teks info -->
-                <div class="absolute inset-0 z-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 cursor-pointer" onclick="window.open('${fullResUrl}', '_blank', 'noopener,noreferrer')">
-                <div class="bg-white/90 text-slate-900 text-xs font-extrabold px-4 py-2 rounded-full shadow-2xl backdrop-blur-md transform translate-y-2 group-hover:translate-y-0 transition duration-300 mb-16">
-                Perbesar 🔍
-            </div>
-        </div>
+                    <!-- Tombol Perbesar tetap hover-only agar tidak menghalangi wajah -->
+                    <div class="absolute inset-0 z-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 cursor-pointer" onclick="window.open('${fullResUrl}', '_blank', 'noopener,noreferrer')">
+                        <div class="bg-white/90 text-slate-900 text-xs font-extrabold px-4 py-2 rounded-full shadow-2xl backdrop-blur-md transform translate-y-2 group-hover:translate-y-0 transition duration-300 mb-16">
+                            Perbesar 🔍
+                        </div>
+                    </div>
 
-        <!-- Kontainer Info: Sembunyi di awal, muncul dari bawah saat hover -->
-        <div class="relative z-20 p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 pointer-events-none group-hover:pointer-events-auto">
-            <div class="flex justify-between items-center mb-2.5">
-                <h3 class="font-bold text-white text-sm truncate pr-2 shadow-sm" title="${namaFile}">${namaFile}</h3>
-                <span class="bg-white/20 backdrop-blur-md text-white text-[10px] font-bold px-2 py-1 rounded-md border border-white/20 whitespace-nowrap shadow-sm">⏰ ${waktuJam}</span>
-            </div>
+                    <!-- Kontainer Info dinamis -->
+                    <div class="relative z-20 p-4 flex flex-col justify-end transition-all duration-300 ${infoOpacity} ${infoTransform} ${infoPointer}">
+                        <div class="flex justify-between items-center mb-2.5">
+                            <h3 class="font-bold text-white text-sm truncate pr-2 shadow-sm" title="${namaFile}">${namaFile}</h3>
+                            <span class="bg-white/20 backdrop-blur-md text-white text-[10px] font-bold px-2 py-1 rounded-md border border-white/20 whitespace-nowrap shadow-sm">⏰ ${waktuJam}</span>
+                        </div>
 
-            <div class="flex flex-wrap gap-1.5 mb-3">
-                ${mColor !== 'none' ? `<span class="badge ${classWarna(mColor)}">🏍️ ${mColor}</span>` : ''}
-                ${hColor !== 'none' ? `<span class="badge ${classWarna(hColor)}">🪖 ${hColor}</span>` : ''}
-                ${jColor !== 'none' ? `<span class="badge ${classWarna(jColor)}">🧥 ${jColor}</span>` : ''}
-            </div>
+                        <div class="flex flex-wrap gap-1.5 mb-3">
+                            ${mColor !== 'none' ? `<span class="badge ${classWarna(mColor)}">🏍️ ${mColor}</span>` : ''}
+                            ${hColor !== 'none' ? `<span class="badge ${classWarna(hColor)}">🪖 ${hColor}</span>` : ''}
+                            ${jColor !== 'none' ? `<span class="badge ${classWarna(jColor)}">🧥 ${jColor}</span>` : ''}
+                        </div>
 
-            <a href="${fullResUrl}" target="_blank" rel="noopener noreferrer" class="block w-full py-2.5 text-center bg-white/15 hover:bg-white/30 text-white font-semibold text-xs rounded-xl backdrop-blur-md border border-white/20 transition shadow-sm active:scale-95 pointer-events-auto">
-                Buka di Google Drive ↗
-            </a>
-        </div>
-    </div>`;
+                        <a href="${fullResUrl}" target="_blank" rel="noopener noreferrer" class="block w-full py-2.5 text-center bg-white/15 hover:bg-white/30 text-white font-semibold text-xs rounded-xl backdrop-blur-md border border-white/20 transition shadow-sm active:scale-95 pointer-events-auto">
+                            Buka di Google Drive ↗
+                        </a>
+                    </div>
+                </div>`;
             });
         }
 

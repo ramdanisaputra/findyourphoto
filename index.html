@@ -480,42 +480,48 @@
                 const waktuJam = item.waktu_jam || '-';
 
                 // Variabel CSS dinamis berdasarkan state Dev Mode
-                const infoOpacity = window.isDevMode ? "opacity-100" : "opacity-0 group-hover:opacity-100";
-                const infoTransform = window.isDevMode ? "translate-y-0" : "translate-y-4 group-hover:translate-y-0";
-                const infoPointer = window.isDevMode ? "pointer-events-auto" : "pointer-events-none group-hover:pointer-events-auto";
+const infoOpacity = window.isDevMode ? "opacity-100" : "opacity-0 group-hover:opacity-100";
+const infoTransform = window.isDevMode ? "translate-y-0" : "translate-y-4 group-hover:translate-y-0";
+const infoPointer = window.isDevMode ? "pointer-events-auto" : "pointer-events-none group-hover:pointer-events-auto";
 
-                galeri.innerHTML += `
-                <div class="relative rounded-2xl overflow-hidden group aspect-[3/4] border border-slate-700/60 shadow-xl hover:shadow-2xl hover:-translate-y-1 transition duration-500 flex flex-col justify-end bg-slate-900">
-                    <img src="${imgSource}" loading="lazy" class="absolute inset-0 w-full h-full object-cover object-[center_20%] group-hover:scale-105 transition duration-700 ease-out" alt="${namaFile}">
-            
-                    <!-- Gradient gelap dinamis -->
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent transition duration-300 ${infoOpacity}"></div>
+// Gradient diubah: Jika Dev Mode hidup, gradient hanya setinggi setengah layar bawah (h-1/2) 
+// dan langsung memudar transparan, sehingga tidak menggelapkan helm dan muka.
+const gradientOverlay = window.isDevMode 
+    ? "absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-slate-950/90 to-transparent opacity-100 transition-opacity duration-300"
+    : "absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300";
 
-                    <!-- Tombol Perbesar tetap hover-only agar tidak menghalangi wajah -->
-                    <div class="absolute inset-0 z-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 cursor-pointer" onclick="window.open('${fullResUrl}', '_blank', 'noopener,noreferrer')">
-                        <div class="bg-white/90 text-slate-900 text-xs font-extrabold px-4 py-2 rounded-full shadow-2xl backdrop-blur-md transform translate-y-2 group-hover:translate-y-0 transition duration-300 mb-16">
-                            Perbesar 🔍
-                        </div>
-                    </div>
+galeri.innerHTML += `
+<div class="relative rounded-2xl overflow-hidden group aspect-[3/4] border border-slate-700/60 shadow-xl hover:shadow-2xl hover:-translate-y-1 transition duration-500 flex flex-col justify-end bg-slate-900">
+    <img src="${imgSource}" loading="lazy" class="absolute inset-0 w-full h-full object-cover object-[center_20%] group-hover:scale-105 transition duration-700 ease-out" alt="${namaFile}">
 
-                    <!-- Kontainer Info dinamis -->
-                    <div class="relative z-20 p-4 flex flex-col justify-end transition-all duration-300 ${infoOpacity} ${infoTransform} ${infoPointer}">
-                        <div class="flex justify-between items-center mb-2.5">
-                            <h3 class="font-bold text-white text-sm truncate pr-2 shadow-sm" title="${namaFile}">${namaFile}</h3>
-                            <span class="bg-white/20 backdrop-blur-md text-white text-[10px] font-bold px-2 py-1 rounded-md border border-white/20 whitespace-nowrap shadow-sm">⏰ ${waktuJam}</span>
-                        </div>
+    <!-- Layer bayangan hitam (Vignette) -->
+    <div class="${gradientOverlay}"></div>
 
-                        <div class="flex flex-wrap gap-1.5 mb-3">
-                            ${mColor !== 'none' ? `<span class="badge ${classWarna(mColor)}">🏍️ ${mColor}</span>` : ''}
-                            ${hColor !== 'none' ? `<span class="badge ${classWarna(hColor)}">🪖 ${hColor}</span>` : ''}
-                            ${jColor !== 'none' ? `<span class="badge ${classWarna(jColor)}">🧥 ${jColor}</span>` : ''}
-                        </div>
+    <!-- Tombol Perbesar tetap hover-only agar tidak menghalangi wajah -->
+    <div class="absolute inset-0 z-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 cursor-pointer" onclick="window.open('${fullResUrl}', '_blank', 'noopener,noreferrer')">
+        <div class="bg-white/90 text-slate-900 text-xs font-extrabold px-4 py-2 rounded-full shadow-2xl backdrop-blur-md transform translate-y-2 group-hover:translate-y-0 transition duration-300 mb-16">
+            Perbesar 🔍
+        </div>
+    </div>
 
-                        <a href="${fullResUrl}" target="_blank" rel="noopener noreferrer" class="block w-full py-2.5 text-center bg-white/15 hover:bg-white/30 text-white font-semibold text-xs rounded-xl backdrop-blur-md border border-white/20 transition shadow-sm active:scale-95 pointer-events-auto">
-                            Buka di Google Drive ↗
-                        </a>
-                    </div>
-                </div>`;
+    <!-- Kontainer Info -->
+    <div class="relative z-20 p-4 flex flex-col justify-end transition-all duration-300 ${infoOpacity} ${infoTransform} ${infoPointer}">
+        <div class="flex justify-between items-center mb-2.5">
+            <h3 class="font-bold text-white text-sm truncate pr-2 shadow-sm" title="${namaFile}">${namaFile}</h3>
+            <span class="bg-white/20 backdrop-blur-md text-white text-[10px] font-bold px-2 py-1 rounded-md border border-white/20 whitespace-nowrap shadow-sm">⏰ ${waktuJam}</span>
+        </div>
+
+        <div class="flex flex-wrap gap-1.5 mb-3">
+            ${mColor !== 'none' ? `<span class="badge ${classWarna(mColor)}">🏍️ ${mColor}</span>` : ''}
+            ${hColor !== 'none' ? `<span class="badge ${classWarna(hColor)}">🪖 ${hColor}</span>` : ''}
+            ${jColor !== 'none' ? `<span class="badge ${classWarna(jColor)}">🧥 ${jColor}</span>` : ''}
+        </div>
+
+        <a href="${fullResUrl}" target="_blank" rel="noopener noreferrer" class="block w-full py-2.5 text-center bg-white/15 hover:bg-white/30 text-white font-semibold text-xs rounded-xl backdrop-blur-md border border-white/20 transition shadow-sm active:scale-95 pointer-events-auto">
+            Buka di Google Drive ↗
+        </a>
+    </div>
+</div>`;
             });
         }
 
